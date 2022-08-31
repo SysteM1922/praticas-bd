@@ -1,0 +1,61 @@
+5.1
+a)
+π Ssn, Fname, Lname, Pnumber, Pname ( (project ⟕ Pnumber =  Pno works_on) ⟕ Essn=Ssn employee)
+
+b)
+π Fname, Lname (employee ⨝ (Super_ssn=Carlos.Ssn) (ρ Carlos (π Ssn (σ Fname='Carlos' ∧ Minit='D' ∧ Lname='Gomes' (employee)))))
+
+c)
+γ Pname ; sum(Hours) -> horas_work ( project ⟕ (Pnumber=Pno) works_on)
+
+d)
+π Fname,Lname (σ Hours>20 (works_on ⨝ (Ssn=Essn) (σ Dno=3 ∧  Pname='Aveiro Digital' (employee ⨝ project ))))
+
+e)
+π Fname,Lname (σ Essn=null (employee ⟕ Ssn=Essn works_on))
+
+f)
+γ Dnumber,Fname,Lname;avg(Salary)->Average_Salary ((σ Sex='F' (department ⨝ Dno=Dnumber employee)))
+
+g)
+π Ssn, Fname, Lname ( σ Dependents>=2 (employee ⨝ Ssn=Essn (γ Essn; count(Essn)->Dependents (dependent) )))
+
+h)
+π Fname,Lname,Essn (σ Essn=null (dependent ⟖ (Essn=Ssn) ((employee ⨝(Ssn=Mgr_ssn) department))))
+
+i)
+π Fname,Lname,Address (σ Dlocation≠'Aveiro' (dept_location ⨝(Dnumber=Dno) (σ Plocation='Aveiro' (project ⨝ (Pnumber=Pno) (works_on ⨝ (Ssn=Essn) employee)))))
+
+
+5.2
+a) 
+π nome,numero (σ numero=null (fornecedor ⟕(nif=fornecedor) encomenda))
+
+b)
+γ codProd;avg(unidades)->TotalUnidades item
+	
+c)
+γ avg(total_product)-> num_medio_produtos (γ numEnc; count(numEnc)-> total_product (item))
+
+d)
+γ fornecedor.nome,produto.nome; sum(item.unidades)->UnidadesTotal (produto⨝codigo=codProd (π nome,codProd,unidades (item⨝numEnc=numero (fornecedor⨝nif=fornecedor encomenda))))
+
+
+5.3
+a)
+π nome (σ numPresc = null (paciente ⟕ prescricao))
+
+b)
+γ especialidade;count(numPresc)-> numPresc ((medico ⨝ numSNS = numMedico prescricao))
+
+c)
+γ nome; count(numPresc) -> numPresc (farmacia ⨝ nome = farmacia (prescricao))
+
+d)
+π farmaco.numRegFarm, nome , formula (σ numPresc = null ((σ numRegFarm=906 farmaco) ⟕ farmaco.nome = nomeFarmaco (presc_farmaco)))
+
+e)
+π farmacia.nome, farmaceutica.nome ,nVendas (γ nome,numRegFarm	;count(numRegFarm)->nVendas ((presc_farmaco ⨝ (π nome, numPresc (farmacia ⨝ nome = farmacia (prescricao))))) ⨝ numRegFarm = numReg (farmaceutica))
+
+f)
+π nome (σ count ≥ 2 (γ numUtente; count(numMedico)-> count (π prescricao.numUtente	,prescricao.numMedico (medico ⨝ numSNS = numMedico (prescricao)))) ⨝ paciente)
